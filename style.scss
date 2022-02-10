@@ -1,0 +1,113 @@
+// base
+//px→vw変換
+$viewport_pc: 2560; // 基準となるビューポート
+
+@function ppx($num_pc, $width_pc: $viewport_pc) {
+    @return (1vw * $num_pc / $width_pc * 100);
+}
+
+$viewport_sp: 720; // 基準となるビューポート
+
+@function spx($num_sp, $width_sp: $viewport_sp) {
+    @return (1vw * $num_sp / $width_sp * 100);
+}
+
+// メディアクエリ設定
+$pc: 1024px; // PC
+$tab: 834px; // タブレット
+$sp: 480px; // スマホ
+
+@mixin pc {
+    @media (max-width: ($pc)) {
+        @content;
+    }
+}
+
+@mixin tab {
+    @media (max-width: ($tab)) {
+        @content;
+    }
+}
+
+@mixin sp {
+    @media (max-width: ($sp)) {
+        @content;
+    }
+}
+
+// .pc.sp表示設定
+.pc {
+    display: block;
+
+    @include sp {
+        display: none;
+    }
+}
+
+.sp {
+    display: none;
+
+    @include sp {
+        display: block;
+    }
+}
+body {
+    margin: 0;
+}
+img {
+    width: 100vw;
+}
+// -base
+
+.hero_container {
+    position: relative;
+    overflow: hidden;
+    width: 100vw;
+    .hero {
+        @keyframes zoomUp {
+            0% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .swiper-slide-active .slide-img,
+        .swiper-slide-duplicate-active .slide-img,
+        .swiper-slide-prev .slide-img {
+            animation: zoomUp 10s linear 0s 1 normal both;
+        }
+
+        img {
+            width: 100vw;
+
+            &.pc {
+            }
+            &.sp {
+            }
+        }
+    }
+    .hero_title {
+        position: absolute;
+        top: 0;
+        right: ppx(483);
+        padding: ppx(126) 0 ppx(140);
+        width: ppx(246);
+        background-color: rgba($color: #fafaf2, $alpha: 0.96);
+        z-index: 1;
+        > h2 {
+            writing-mode: vertical-rl;
+            font-size: ppx(81);
+            letter-spacing: 0.15em;
+            line-height: 1;
+            color: #65713d;
+            margin: 0 auto 4.375vw;
+        }
+        .logo {
+            width: ppx(168);
+            display: block;
+            margin: 0 auto;
+        }
+    }
+}
